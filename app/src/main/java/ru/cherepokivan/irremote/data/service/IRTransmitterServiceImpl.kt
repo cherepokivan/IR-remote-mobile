@@ -2,6 +2,7 @@ package ru.cherepokivan.irremote.data.service
 
 import android.content.Context
 import android.hardware.ConsumerIrManager
+import android.util.Log
 import ru.cherepokivan.irremote.domain.model.IRCommand
 import ru.cherepokivan.irremote.domain.service.IRTransmitterError
 import ru.cherepokivan.irremote.domain.service.IRTransmitterService
@@ -15,11 +16,22 @@ class IRTransmitterServiceImpl @Inject constructor(
 ) : IRTransmitterService {
 
     private val irManager: ConsumerIrManager? by lazy {
-        context.getSystemService(Context.CONSUMER_IR_SERVICE) as? ConsumerIrManager
+        val manager = context.getSystemService(Context.CONSUMER_IR_SERVICE) as? ConsumerIrManager
+        Log.d(TAG, "IR Manager initialized: ${manager != null}")
+        if (manager != null) {
+            Log.d(TAG, "Has IR Emitter: ${manager.hasIrEmitter()}")
+        }
+        manager
     }
 
     override fun isAvailable(): Boolean {
-        return irManager?.hasIrEmitter() == true
+        val available = irManager?.hasIrEmitter() == true
+        Log.d(TAG, "IR Available: $available")
+        return available
+    }
+
+    companion object {
+        private const val TAG = "IRTransmitterService"
     }
 
     override fun getCarrierFrequencies(): List<Int> {

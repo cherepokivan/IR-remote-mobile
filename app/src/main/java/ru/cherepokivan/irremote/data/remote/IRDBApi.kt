@@ -12,13 +12,13 @@ interface IRDBApi {
     /**
      * Получить список всех устройств из IRDB
      */
-    @GET("probonopd/irdb/master/codes/index.json")
+    @GET("probonopd/irdb/refs/heads/master/codes/index.json")
     suspend fun getIRDBIndex(): List<IRDBDeviceDto>
 
     /**
      * Получить IR коды для конкретного устройства
      */
-    @GET("probonopd/irdb/master/codes/{brand}/{device}.json")
+    @GET("probonopd/irdb/refs/heads/master/codes/{brand}/{device}.json")
     suspend fun getDeviceCodes(
         @Path("brand") brand: String,
         @Path("device") device: String
@@ -27,6 +27,6 @@ interface IRDBApi {
     /**
      * Получить список устройств из Flipper-IRDB
      */
-    @GET("Lucaslhm/Flipper-IRDB/main/index.json")
+    @GET("Lucaslhm/Flipper-IRDB/refs/heads/main/index.json")
     suspend fun getFlipperIndex(): List<IRDBDeviceDto>
 }
