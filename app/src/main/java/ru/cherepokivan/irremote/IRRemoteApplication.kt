@@ -1,0 +1,79 @@
+package ru.cherepokivan.irremote
+
+import android.app.Application
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
+import ru.cherepokivan.irremote.data.local.SampleDataProvider
+import ru.cherepokivan.irremote.domain.repository.DeviceRepository
+import ru.cherepokivan.irremote.domain.repository.IRCommandRepository
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@HiltAndroidApp
+class IRRemoteApplication : Application() {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface RepositoryEntryPoint {
+        fun deviceRepository(): DeviceRepository
+        fun commandRepository(): IRCommandRepository
+    }
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+    override fun onCreate() {
+        super.onCreate()
+        loadSampleDataIfNeeded()
+    }
+
+    private fun loadSampleDataIfNeeded() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val isFirstLaunch = dataStore.data.first()[FIRST_LAUNCH_KEY] ?: true
+
+                if (isFirstLaunch) {
+                    val entryPoint = EntryPointAccessors.fromApplication(
+                        applicationContext,
+                        RepositoryEntryPoint::class.java
+                    )
+
+                    val deviceRepository = entryPoint.deviceRepository()
+                    val commandRepository = entryPoint.commandRepository()
+
+                    // Загружаем тестовые данные
+                    val sampleData = SampleDataProvider.getSampleDevices()
+
+                    sampleData.forEach { (device, commands) ->
+                        val deviceId = deviceRepository.addDevice(device)
+                        commands.forEach { command ->
+                            commandRepository.addCommand(command.copy(deviceId = deviceId))
+                        }
+                    }
+
+                    // Отмечаем, что первый запуск завершён
+                    dataStore.edit { preferences ->
+                        preferences[FIRST_LAUNCH_KEY] = false
+                    }
+                }
+            } catch (e: Exception) {
+                // Логируем ошибку, но не крашим приложение
+                e.printStackTrace()
+            }
+        }
+    }
+
+    companion object {
+        private val FIRST_LAUNCH_KEY = booleanPreferencesKey("first_launch")
+    }
+}

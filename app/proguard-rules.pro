@@ -55,3 +55,36 @@
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**
+
+# Keep data classes
+-keep class ru.cherepokivan.irremote.domain.model.** { *; }
+-keep class ru.cherepokivan.irremote.data.remote.dto.** { *; }
+-keep class ru.cherepokivan.irremote.data.local.entity.** { *; }
+
+# Hilt
+-keep class dagger.hilt.** { *; }
+-keep class javax.inject.** { *; }
+-keep class * extends dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper { *; }
+
+# Coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# Keep Compose
+-keep class androidx.compose.** { *; }
+-keep class androidx.compose.runtime.** { *; }
+-keep class androidx.compose.ui.** { *; }
+
+# Keep application class
+-keep class ru.cherepokivan.irremote.IRRemoteApplication { *; }
+
+# Keep ViewModels
+-keep class ru.cherepokivan.irremote.presentation.screen.**.* extends androidx.lifecycle.ViewModel { *; }
+
+# Keep Parcelable
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}

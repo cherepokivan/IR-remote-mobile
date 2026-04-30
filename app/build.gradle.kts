@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.irremote.app"
+    namespace = "ru.cherepokivan.irremote"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.irremote.app"
+        applicationId = "ru.cherepokivan.irremote"
         minSdk = 21
         targetSdk = 34
         versionCode = 1

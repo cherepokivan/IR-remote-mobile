@@ -1,12 +1,7 @@
 # IR Remote - Android приложение для управления устройствами через ИК-порт
 
-<<<<<<< HEAD
 ![Android CI](https://github.com/cherepokivan/IR-remote-mobile/workflows/Android%20CI/badge.svg)
 ![Code Quality](https://github.com/cherepokivan/IR-remote-mobile/workflows/Code%20Quality/badge.svg)
-=======
-![Android CI](https://github.com/cherepokivan/IR-Remote-mobile/workflows/Android%20CI/badge.svg)
-![Code Quality](https://github.com/cherepokivan/IR-Remote-mobile/workflows/Code%20Quality/badge.svg)
->>>>>>> a3fe199034278c97cdbc73ceecf931bed72b72d5
 
 ## 📱 Описание проекта
 

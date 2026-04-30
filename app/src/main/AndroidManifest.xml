@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Разрешения для работы с ИК-портом -->
-    <uses-feature
-        android:name="android.hardware.consumerir"
-        android:required="true" />
-
-    <!-- Разрешения для работы с интернетом -->
+    <!-- Разрешения -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Требование наличия IR передатчика (не обязательно) -->
+    <uses-feature
+        android:name="android.hardware.consumerir"
+        android:required="false" />
 
     <application
         android:name=".IRRemoteApplication"
