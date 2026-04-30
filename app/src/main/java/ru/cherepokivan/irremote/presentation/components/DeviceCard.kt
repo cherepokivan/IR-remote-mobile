@@ -73,7 +73,7 @@ private fun getDeviceIcon(type: DeviceType) = when (type) {
     DeviceType.FAN -> Icons.Default.Air
     DeviceType.PROJECTOR -> Icons.Default.Videocam
     DeviceType.AUDIO -> Icons.Default.Speaker
-    DeviceType.SET_TOP_BOX -> Icons.Default.SettopBox
+    DeviceType.SET_TOP_BOX -> Icons.Default.Tv
     DeviceType.DVD_PLAYER -> Icons.Default.Album
     DeviceType.OTHER -> Icons.Default.DevicesOther
 }
