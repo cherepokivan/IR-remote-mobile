@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IR Remote</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="search">Search</string>
+
+    <!-- Home Screen -->
+    <string name="favorites">Favorites</string>
+    <string name="all_devices">All Devices</string>
+    <string name="no_devices">No devices added yet.\nTap + to add your first device.</string>
+    <string name="ir_not_available">IR transmitter not available on this device</string>
+
+    <!-- Device Types -->
+    <string name="device_type_tv">TV</string>
+    <string name="device_type_ac">Air Conditioner</string>
+    <string name="device_type_fan">Fan</string>
+    <string name="device_type_projector">Projector</string>
+    <string name="device_type_audio">Audio System</string>
+    <string name="device_type_set_top_box">Set-Top Box</string>
+    <string name="device_type_dvd_player">DVD Player</string>
+    <string name="device_type_other">Other</string>
+
+    <!-- Add Device -->
+    <string name="add_device">Add Device</string>
+    <string name="device_name">Device Name</string>
+    <string name="device_type">Device Type</string>
+    <string name="device_brand">Brand</string>
+    <string name="device_model">Model (Optional)</string>
+    <string name="select_device_type">Select Device Type</string>
+
+    <!-- Remote Control -->
+    <string name="power">Power</string>
+    <string name="volume_up">Volume Up</string>
+    <string name="volume_down">Volume Down</string>
+    <string name="channel_up">Channel Up</string>
+    <string name="channel_down">Channel Down</string>
+    <string name="mute">Mute</string>
+    <string name="menu">Menu</string>
+    <string name="back">Back</string>
+    <string name="home">Home</string>
+    <string name="ok_button">OK</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+
+    <!-- Errors -->
+    <string name="error_generic">An error occurred</string>
+    <string name="error_ir_transmission">Failed to send IR signal</string>
+    <string name="error_device_not_found">Device not found</string>
+    <string name="error_command_not_found">Command not found</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_add_device">Add Device</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_favorite">Favorite</string>
+    <string name="cd_remove_favorite">Remove from favorites</string>
+    <string name="cd_add_favorite">Add to favorites</string>
+</resources>
