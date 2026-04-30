@@ -5,26 +5,6 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-// Функция для получения версии из git тегов
-fun getVersionCode(): Int {
-    return try {
-        val process = Runtime.getRuntime().exec("git rev-list --count HEAD")
-        process.inputStream.bufferedReader().readText().trim().toIntOrNull() ?: 1
-    } catch (e: Exception) {
-        1
-    }
-}
-
-fun getVersionName(): String {
-    return try {
-        val process = Runtime.getRuntime().exec("git describe --tags --always --dirty")
-        val version = process.inputStream.bufferedReader().readText().trim()
-        if (version.isEmpty()) "1.0.0" else version.removePrefix("v")
-    } catch (e: Exception) {
-        "1.0.0"
-    }
-}
-
 android {
     namespace = "ru.cherepokivan.irremote"
     compileSdk = 34
@@ -33,8 +13,8 @@ android {
         applicationId = "ru.cherepokivan.irremote"
         minSdk = 21
         targetSdk = 34
-        versionCode = getVersionCode()
-        versionName = getVersionName()
+        versionCode = 1
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
