@@ -19,13 +19,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Run unit tests
-      run: ./gradlew testDebugUnitTest
+      run: gradle testDebugUnitTest --no-daemon
 
     - name: Generate test report
       uses: dorny/test-reporter@v1
@@ -56,13 +57,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Run ktlint
-      run: ./gradlew ktlintCheck || true
+      run: gradle ktlintCheck --no-daemon || true
 
   detekt:
     runs-on: ubuntu-latest
@@ -76,13 +78,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Run detekt
-      run: ./gradlew detekt || true
+      run: gradle detekt --no-daemon || true
 
     - name: Upload detekt report
       uses: actions/upload-artifact@v4

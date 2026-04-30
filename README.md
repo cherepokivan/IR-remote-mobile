@@ -1,7 +1,7 @@
 # IR Remote - Android приложение для управления устройствами через ИК-порт
 
-![Android CI](https://github.com/YOUR_USERNAME/IR-Remote/workflows/Android%20CI/badge.svg)
-![Code Quality](https://github.com/YOUR_USERNAME/IR-Remote/workflows/Code%20Quality/badge.svg)
+![Android CI](https://github.com/cherepokivan/IR-remote-mobile/workflows/Android%20CI/badge.svg)
+![Code Quality](https://github.com/cherepokivan/IR-remote-mobile/workflows/Code%20Quality/badge.svg)
 
 ## 📱 Описание проекта
 
@@ -13,7 +13,7 @@
 - 🗄️ **Большая база ИК-сигналов** для различных брендов (IRDB, Flipper-IRDB, IRremoteESP8266)
 - 🔄 **Автоматическое обновление** баз данных при наличии интернета
 - 📴 **Полная работа в офлайн-режиме** с локальным кэшированием
-- 🎯 **Автоподбор модели** устройства (как в Mi Пульт)
+- 🎯 **Автоподбор модели** устройства
 - 💾 **Сохранение пользовательских пультов**
 - ⭐ **Избранные устройства** для быстрого доступа
 - 🎨 **Material Design 3** с поддержкой динамических цветов
@@ -168,8 +168,8 @@ IR Remote/
 
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/YOUR_USERNAME/IR-Remote.git
-cd IR-Remote
+git clone https://github.com/cherepokivan/IR-remote-mobile.git
+cd IR-remote-mobile
 
 # Собрать debug APK
 ./gradlew assembleDebug

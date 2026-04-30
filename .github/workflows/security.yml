@@ -21,13 +21,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Run dependency check
-      run: ./gradlew dependencyCheckAnalyze || true
+      run: gradle dependencyCheckAnalyze --no-daemon || true
 
     - name: Upload dependency check report
       uses: actions/upload-artifact@v4
@@ -57,13 +58,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Build project
-      run: ./gradlew assembleDebug
+      run: gradle assembleDebug --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
@@ -80,13 +82,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Check for vulnerable dependencies
-      run: ./gradlew dependencyUpdates
+      run: gradle dependencyUpdates --no-daemon
 
     - name: Upload dependency updates report
       uses: actions/upload-artifact@v4

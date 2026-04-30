@@ -19,25 +19,26 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@v2
 
     - name: Check code formatting
-      run: ./gradlew ktlintCheck || true
+      run: gradle ktlintCheck --no-daemon || true
 
     - name: Run lint
-      run: ./gradlew lintDebug
+      run: gradle lintDebug --no-daemon
 
     - name: Run unit tests
-      run: ./gradlew testDebugUnitTest
+      run: gradle testDebugUnitTest --no-daemon
 
     - name: Build debug APK
-      run: ./gradlew assembleDebug
+      run: gradle assembleDebug --no-daemon
 
     - name: Comment PR with build status
       uses: actions/github-script@v7
@@ -69,17 +70,18 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
 
     - name: Build APK
-      run: ./gradlew assembleDebug
+      run: gradle assembleDebug --no-daemon
 
     - name: Check APK size
       run: |
-        APK_SIZE=$(stat -f%z app/build/outputs/apk/debug/app-debug.apk 2>/dev/null || stat -c%s app/build/outputs/apk/debug/app-debug.apk)
+        APK_SIZE=$(stat -c%s app/build/outputs/apk/debug/app-debug.apk 2>/dev/null || stat -f%z app/build/outputs/apk/debug/app-debug.apk)
         APK_SIZE_MB=$((APK_SIZE / 1024 / 1024))
         echo "APK Size: ${APK_SIZE_MB}MB"
         echo "APK_SIZE_MB=${APK_SIZE_MB}" >> $GITHUB_ENV
