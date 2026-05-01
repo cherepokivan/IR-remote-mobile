@@ -15,6 +15,10 @@ object IRDBMapper {
 
     private val gson = Gson()
 
+    fun parseJson(brand: String, json: String): IRDBDeviceDto {
+        return gson.fromJson(json, IRDBDeviceDto::class.java).copy(brand = brand)
+    }
+
     fun toDomain(dto: IRDBDeviceDto): Device {
         return Device(
             id = 0, // будет назначен Room

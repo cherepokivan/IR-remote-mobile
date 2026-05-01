@@ -1,32 +1,23 @@
 package ru.cherepokivan.irremote.data.remote
 
-import ru.cherepokivan.irremote.data.remote.dto.IRDBDeviceDto
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 /**
  * API для загрузки IR баз данных из GitHub
+ * Используем прямые ссылки на конкретные файлы
  */
 interface IRDBApi {
 
     /**
-     * Получить список всех устройств из IRDB
+     * Получить тестовые устройства из IRDB
+     * Загружаем несколько популярных устройств для начала
      */
-    @GET("probonopd/irdb/refs/heads/master/codes/index.json")
-    suspend fun getIRDBIndex(): List<IRDBDeviceDto>
+    @GET("probonopd/irdb/refs/heads/master/codes/Samsung/TV.json")
+    suspend fun getSamsungTV(): String
 
-    /**
-     * Получить IR коды для конкретного устройства
-     */
-    @GET("probonopd/irdb/refs/heads/master/codes/{brand}/{device}.json")
-    suspend fun getDeviceCodes(
-        @Path("brand") brand: String,
-        @Path("device") device: String
-    ): IRDBDeviceDto
+    @GET("probonopd/irdb/refs/heads/master/codes/LG/TV.json")
+    suspend fun getLGTV(): String
 
-    /**
-     * Получить список устройств из Flipper-IRDB
-     */
-    @GET("Lucaslhm/Flipper-IRDB/refs/heads/main/index.json")
-    suspend fun getFlipperIndex(): List<IRDBDeviceDto>
+    @GET("probonopd/irdb/refs/heads/master/codes/Sony/TV.json")
+    suspend fun getSonyTV(): String
 }

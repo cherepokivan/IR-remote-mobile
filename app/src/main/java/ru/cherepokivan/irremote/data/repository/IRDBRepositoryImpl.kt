@@ -25,36 +25,51 @@ class IRDBRepositoryImpl @Inject constructor(
 
     override suspend fun downloadAndImportIRDB(): Flow<ImportProgress> = flow {
         try {
-            emit(ImportProgress.Loading(0, "Загрузка списка устройств..."))
+            emit(ImportProgress.Loading(0, "Загрузка устройств..."))
 
-            // Загружаем индекс IRDB
-            val devices = try {
-                irdbApi.getIRDBIndex()
+            // Загружаем 3 популярных устройства для теста
+            val devices = mutableListOf<Pair<String, String>>()
+
+            try {
+                emit(ImportProgress.Loading(10, "Загрузка Samsung TV..."))
+                val samsungJson = irdbApi.getSamsungTV()
+                devices.add("Samsung" to samsungJson)
             } catch (e: Exception) {
-                emit(ImportProgress.Error("Ошибка загрузки: ${e.message}"))
+                emit(ImportProgress.Loading(10, "Samsung TV недоступен"))
+            }
+
+            try {
+                emit(ImportProgress.Loading(40, "Загрузка LG TV..."))
+                val lgJson = irdbApi.getLGTV()
+                devices.add("LG" to lgJson)
+            } catch (e: Exception) {
+                emit(ImportProgress.Loading(40, "LG TV недоступен"))
+            }
+
+            try {
+                emit(ImportProgress.Loading(70, "Загрузка Sony TV..."))
+                val sonyJson = irdbApi.getSonyTV()
+                devices.add("Sony" to sonyJson)
+            } catch (e: Exception) {
+                emit(ImportProgress.Loading(70, "Sony TV недоступен"))
+            }
+
+            if (devices.isEmpty()) {
+                emit(ImportProgress.Error("Не удалось загрузить ни одного устройства"))
                 return@flow
             }
 
-            val total = devices.size
+            emit(ImportProgress.Loading(80, "Импорт в базу данных..."))
 
-            if (total == 0) {
-                emit(ImportProgress.Error("База данных пуста"))
-                return@flow
-            }
-
-            emit(ImportProgress.Loading(0, "Найдено устройств: $total"))
-
-            // Импортируем каждое устройство
-            devices.forEachIndexed { index, deviceDto ->
+            // Импортируем загруженные устройства
+            devices.forEachIndexed { index, (brand, json) ->
                 try {
-                    // Преобразуем в domain модель
+                    val deviceDto = IRDBMapper.parseJson(brand, json)
                     val device = IRDBMapper.toDomain(deviceDto)
 
-                    // Сохраняем устройство
                     val deviceEntity = DeviceMapper.toEntity(device)
                     val deviceId = deviceDao.insert(deviceEntity)
 
-                    // Сохраняем команды
                     val commands = IRDBMapper.commandsToDomain(
                         deviceId = deviceId,
                         commands = deviceDto.commands,
@@ -63,21 +78,16 @@ class IRDBRepositoryImpl @Inject constructor(
 
                     val commandEntities = commands.map { IRCommandMapper.toEntity(it) }
                     commandDao.insertAll(commandEntities)
-
-                    // Обновляем прогресс
-                    val progress = ((index + 1) * 100) / total
-                    emit(ImportProgress.Loading(
-                        progress = progress,
-                        message = "Импортировано: ${index + 1}/$total"
-                    ))
-
                 } catch (e: Exception) {
                     // Пропускаем проблемные устройства
-                    emit(ImportProgress.Loading(
-                        progress = ((index + 1) * 100) / total,
-                        message = "Ошибка при импорте ${deviceDto.brand} ${deviceDto.model}"
-                    ))
                 }
+            }
+
+            emit(ImportProgress.Success(devices.size))
+        } catch (e: Exception) {
+            emit(ImportProgress.Error(e.message ?: "Неизвестная ошибка"))
+        }
+    }
             }
 
             emit(ImportProgress.Success(total))
