@@ -91,61 +91,16 @@ class IRDBRepositoryImpl @Inject constructor(
 
     override suspend fun downloadAndImportFlipperIRDB(): Flow<ImportProgress> = flow {
         try {
-            emit(ImportProgress.Loading(0, "Загрузка Flipper-IRDB..."))
-
-            val devices = irdbApi.getFlipperIndex()
-            val total = devices.size
-
-            emit(ImportProgress.Loading(0, "Найдено устройств: $total"))
-
-            devices.forEachIndexed { index, deviceDto ->
-                try {
-                    val device = IRDBMapper.toDomain(deviceDto)
-                    val deviceEntity = DeviceMapper.toEntity(device)
-                    val deviceId = deviceDao.insert(deviceEntity)
-
-                    val commands = IRDBMapper.commandsToDomain(
-                        deviceId = deviceId,
-                        commands = deviceDto.commands,
-                        defaultProtocol = deviceDto.protocol
-                    )
-
-                    val commandEntities = commands.map { IRCommandMapper.toEntity(it) }
-                    commandDao.insertAll(commandEntities)
-
-                    val progress = ((index + 1) * 100) / total
-                    emit(ImportProgress.Loading(
-                        progress = progress,
-                        message = "Импортировано: ${index + 1}/$total"
-                    ))
-
-                } catch (e: Exception) {
-                    emit(ImportProgress.Loading(
-                        progress = ((index + 1) * 100) / total,
-                        message = "Ошибка при импорте ${deviceDto.brand} ${deviceDto.model}"
-                    ))
-                }
-            }
-
-            emit(ImportProgress.Success(total))
-
+            emit(ImportProgress.Loading(0, "Flipper-IRDB пока не поддерживается"))
+            emit(ImportProgress.Error("Функция в разработке"))
         } catch (e: Exception) {
             emit(ImportProgress.Error(e.message ?: "Неизвестная ошибка"))
         }
     }
 
     override suspend fun searchOnlineDevices(query: String): List<Device> {
-        return try {
-            val devices = irdbApi.getIRDBIndex()
-            devices
-                .filter {
-                    it.brand.contains(query, ignoreCase = true) ||
-                    it.model.contains(query, ignoreCase = true)
-                }
-                .map { IRDBMapper.toDomain(it) }
-        } catch (e: Exception) {
-            emptyList()
-        }
+        // Поиск пока не реализован, возвращаем пустой список
+        return emptyList()
     }
 }
 
