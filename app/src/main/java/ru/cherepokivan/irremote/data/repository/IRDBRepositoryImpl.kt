@@ -88,14 +88,6 @@ class IRDBRepositoryImpl @Inject constructor(
             emit(ImportProgress.Error(e.message ?: "Неизвестная ошибка"))
         }
     }
-            }
-
-            emit(ImportProgress.Success(total))
-
-        } catch (e: Exception) {
-            emit(ImportProgress.Error(e.message ?: "Неизвестная ошибка"))
-        }
-    }
 
     override suspend fun downloadAndImportFlipperIRDB(): Flow<ImportProgress> = flow {
         try {
